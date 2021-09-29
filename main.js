@@ -4,8 +4,7 @@ const port = 3000;
 const fs = require('fs');
 const bodyParser = require('body-parser')
 const compression = require('compression')
-const topicRouter = require('./routes/topic')
-const indexRouter = require('./routes/index')
+
 
 app.use(express.static('public'))
 
@@ -18,8 +17,13 @@ app.get('*',function(request,response,next){
   });
 });
 
+const topicRouter = require('./routes/topic')
+const indexRouter = require('./routes/index')
+const authRouter = require('./routes/auth')
+
 app.use('/', indexRouter)
 app.use('/topic', topicRouter)
+app.use('/auth', authRouter)
 
 
 app.use(function(req, res, next) {
