@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template.js');
+const auth = require('../lib/auth.js');
 
 //페이지 생성 구현
 router.get('/create', (request, response) => {
@@ -18,7 +19,7 @@ router.get('/create', (request, response) => {
         <input type="submit">
       </p>
       </form>
-      `, '');
+      `, '',auth.statusUI(request,response));
     response.send(html);
   });
   
@@ -50,7 +51,7 @@ router.get('/create', (request, response) => {
         </p>
         </form>
         `,
-        `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`);
+        `<a href="/topic/create">create</a> <a href="/topic/update/${title}">update</a>`,auth.statusUI(request,response));
       response.send(html);
     });
   });
@@ -99,7 +100,7 @@ router.get('/create', (request, response) => {
             <form action="/topic/delete_process" method="post">
               <input type="hidden" name = "id" value="${sanitizedTitle}">
               <input type="submit" value="Delete">
-            </form>`
+            </form>`,auth.statusUI(request,response)
         );
         response.send(html);
       }

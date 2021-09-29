@@ -41,6 +41,12 @@ router.post('/login_process',(request, response)=>{
        response.send('Who?');
      }
  });
+
+ router.get('/logout', (request, response) => {
+  request.session.destroy(function(err){
+    response.redirect('/');
+  })
+});
 /*
 //페이지 생성 구현
 router.get('/create', (request, response) => {
