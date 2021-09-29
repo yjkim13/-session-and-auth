@@ -5,6 +5,12 @@ const fs = require('fs');
 const sanitizeHtml = require('sanitize-html');
 const template = require('../lib/template.js');
 
+var authData = {
+  email:'hobbit09@gmail.com',
+  password:'111111',
+  nickname:'kimew'
+}
+
 router.get('/login', (request, response) => {
   var title = `WEB - login`
   var list = template.list(request.list);
@@ -20,6 +26,20 @@ router.get('/login', (request, response) => {
     `, '');
   response.send(html);
 });
+
+router.post('/auth/login_process',(request, response)=>{
+  var post = request.body;
+     var email = post.email;
+     var password = post.pwd;
+     if(email === authData.email && password === authData.password){
+      response.send('Welcome');
+     }else{
+       response.end('Who?');
+     }
+       response.redirect(`/topic/${title}`);
+       response.end();
+  
+ });
 /*
 //페이지 생성 구현
 router.get('/create', (request, response) => {
