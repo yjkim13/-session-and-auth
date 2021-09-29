@@ -6,30 +6,18 @@ var app = express()
 
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
+  resave: false, // session 데이터가 바뀌기전까지는 저장소를 바뀌지 않는다. 트루면, 바뀌었건 안바뀌었건 바뀌지 않는다.
+  saveUninitialized: true // 세션이 필요하기 전까지 세션을 구동시키지 않는다.
 }))
 
-app.use(function (req, res, next) {
-  if (!req.session.views) {
-    req.session.views = {}
-  }
-
-  // get the url pathname
-  var pathname = parseurl(req).pathname
-
-  // count the views
-  req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
-
-  next()
-})
-
-app.get('/foo', function (req, res, next) {
-  res.send('you viewed this page ' + req.session.views['/foo'] + ' times')
-})
-
-app.get('/bar', function (req, res, next) {
-  res.send('you viewed this page ' + req.session.views['/bar'] + ' times')
+app.get('/', function (req, res, next) {
+    console.log(req.session)
+    if(req.session.num === undefined){
+      req.session.num = 1;
+    } else{
+      req.session.num ++
+    }
+  res.send(`View : ${req.session.num}`);
 })
 
 app.listen(5000, () => {
