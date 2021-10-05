@@ -8,6 +8,10 @@ const auth = require('../lib/auth.js');
 
 //페이지 생성 구현
 router.get('/create', (request, response) => {
+  if(!auth.isOwner(request,response)){
+    response.redirect('/');
+    return false;
+  }
     var title = `WEB - Create`
     var list = template.list(request.list);
     var html = template.HTML(title,list,`
@@ -25,6 +29,10 @@ router.get('/create', (request, response) => {
   
   //페이지 생성 전달
   router.post('/create_process',(request, response)=>{
+    if(!auth.isOwner(request,response)){
+      response.redirect('/');
+      return false;
+    }
     var post = request.body;
        var title = post.title;
        var description = post.description;
@@ -36,6 +44,10 @@ router.get('/create', (request, response) => {
   
    //페이지 수정 구현
    router.get('/update/:topicId', (request, response) => {
+    if(!auth.isOwner(request,response)){
+      response.redirect('/');
+      return false;
+    }
     var filteredId = path.parse(request.params.topicId).base
     fs.readFile(`data/${filteredId}`,`utf8`,function(err,description){
       var title = request.params.topicId;
@@ -58,6 +70,10 @@ router.get('/create', (request, response) => {
   
   //페이지 수정 전달
   router.post('/update_process',(request, response)=>{
+    if(!auth.isOwner(request,response)){
+      response.redirect('/');
+      return false;
+    }
     var post = request.body
     var id = post.id;
     var title = post.title;
@@ -71,6 +87,10 @@ router.get('/create', (request, response) => {
   
     //페이지 삭제 구현
     router.post('/delete_process',(request, response)=>{
+      if(!auth.isOwner(request,response)){
+        response.redirect('/');
+        return false;
+      }
     var post = request.body
     var id = post.id;
     var filteredId = path.parse(id).base
